@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <script src="jquery/http_cdn.staticfile.org_jquery_3.2.1_jquery.js"></script>
+    <script src="popper/http_cdn.staticfile.org_popper.js_1.12.5_umd_popper.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <title>客户端</title>
+    <script>
+    $(function() {
+        $('#myModal').modal('show')
+    });
+    </script>
+</head>
+<body>
+    <!-- 模态框 -->
+    <div class="modal fade" id="myModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+            <!-- 模态框头部 -->
+            <div class="modal-header">
+                <h4 class="modal-title">请输入IP地址和端口</h4>
+            </div>
+
+            <!-- 模态框主体 -->
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="ip">IP地址：</label>
+                        <input type="email" class="form-control" id="ip" placeholder="输入ip地址">
+                    </div>
+                    <div class="form-group">
+                    <label for="port">端口：</label>
+                    <input type="password" class="form-control" id="port" placeholder="输入端口">
+                    </div>
+                </form>
+            </div>
+
+            <!-- 模态框底部 -->
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary" data-dismiss="modal">确认</button>
+            </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
