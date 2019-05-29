@@ -9,12 +9,14 @@
     <script src="js/bootstrap.min.js"></script>
     <script src="js/websocket.js"></script>
     <script src="js/main.js"></script>
+    <script src="js/reconnecting-websocket.min.js"></script>
+    <script src="js/reconnecting-websocket.js"></script>
     <title>客户端</title>
 </head>
 <body>
 <div id="app">
     <!-- 模态框 -->
-    <div class="modal fade" id="myModal">
+    <div class="modal fade" id="myModal" data-backdrop="static">
         <div class="modal-dialog">
             <div class="modal-content">
 
@@ -28,15 +30,15 @@
                 <form>
                     <div class="form-group">
                         <label for="ip">IP地址：</label>
-                        <input type="email" class="form-control" id="ip" placeholder="输入ip地址" v-model="ip">
+                        <input type="text" class="form-control" id="ip" placeholder="输入ip地址" v-model="ip">
                     </div>
                     <div class="form-group">
                         <label for="port">端口：</label>
-                        <input type="password" class="form-control" id="port" placeholder="输入端口" v-model="port">
+                        <input type="text" class="form-control" id="port" placeholder="输入端口" v-model="port">
                     </div>
                     <div class="form-group">
                         <label for="port">房间号：</label>
-                        <input type="password" class="form-control" id="room_id" placeholder="输入房间号" v-model="room_id">
+                        <input type="text" class="form-control" id="room_id" placeholder="输入房间号" v-model="room_id">
                     </div>
                 </form>
             </div>
@@ -49,18 +51,30 @@
             </div>
         </div>
     </div>
+    <!-- 开关 -->
+    <p>{{fee}}</p>
+    <p>{{mode}}</p>
+    <p>{{tar_temp}}</p>
+    <p>{{cur_temp}}</p>
+    <button class="btn btn-primary" onclick="power_on(v.cur_temp)">power_on</button>
+    <button class="btn btn-primary" onclick="power_off()">power_off</button>
+    <button class="btn btn-primary" onclick="update_temp(v.cur_temp)">update_temp</button>
+    <button class="btn btn-primary" onclick="config_para(v.fan, v.mode, v.tar_temp)">config</button>
+    <button class="btn btn-primary" v-on:click="cur_temp+=1">cur_temp++</button>
+    <button class="btn btn-primary" v-on:click="cur_temp-=1">cur_temp--</button>
 </div>
 <script>
     var v = new Vue({
         el: '#app',
         data: {
-            on_off:0,
+            on_off:false,
             ip:'',
             port:'',
             wurl:'',
             fee:0,
-            mod:0,
+            mode:0,
             serving:false,
+            state:0,
             tar_temp:25,
             fan_speed:1,
             cur_temp:25, //当前室温
