@@ -136,11 +136,13 @@ function power_on(current_temp) {
     // ws.onclose = function() {
     //     //alert("start over");
     // };
+    v.on_off = true;
     msg_power_on.poweron.cur_temp = current_temp;
     air_ws.send(JSON.stringify(msg_power_on));
 }
 //关机
 function power_off() {
+    v.on_off = false;
     msg_power_off.poweroff.state = v.state;
     air_ws.send(JSON.stringify(msg_power_off));
 }
