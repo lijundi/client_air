@@ -12,6 +12,26 @@
     <script src="js/reconnecting-websocket.min.js"></script>
     <script src="js/reconnecting-websocket.js"></script>
     <title>客户端</title>
+    <style>
+    a:link {color:#000000;}      /* 未访问链接*/
+    a:visited {color:#FF00FF;}  /* 已访问链接 */
+    a:hover {color:#00FFFF;}  /* 鼠标移动到链接上 */
+    a:active {color:#0000FF;}  /* 鼠标点击时 */
+
+
+.button1 {
+    background-color: #FFFACD/* Green */
+    border: none;
+    color: black;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+</style>
 </head>
 <body>
 <div id="app">
@@ -85,3 +105,92 @@
 </script>
 </body>
 </html>
+<!--
+<div class="wrap">
+   <div class="wrapper">
+    <div class="header">
+
+     <div class="main1">
+
+         <div class="content">
+            <h2>查看当前参数</h2>
+         </div>
+
+
+        <h3 style="text-align:center",id={{ room_id }}><span class="badge badge-info">房间 {{ room_id }}</span></h3>
+         <table class="table table-striped table-bordered">
+            <tr>
+                <td><b>模式</b></td>
+               <if mode >
+                <td>制热</td>
+               </if>
+                <else>
+                <td>制冷</td>
+                </else>
+
+            </tr>
+
+            <tr>
+                <td><b>当前室温</b></td>
+                <td>{{ current_temp }}</td>
+            </tr>
+
+            <tr>
+                <td><b>目标室温</b></td>
+                <td>{{ target_temp }}</td>
+            </tr>
+
+            <tr>
+                <td><b>风速</b></td>
+                <td>{{ fan_speed }}</td>
+            </tr>
+
+            <tr>
+                <td><b>费用</b></td>
+                <td>{{ fee }}</td>
+            </tr>
+
+            <tr>
+                <td><b>服务时长</b></td>
+                <td>{{ serving_duration }}</td>
+            </tr>
+        </table>
+
+
+          <div class="content">
+            <h2>设置空调参数</h2>
+         </div>
+
+        <div class="container">
+
+          <h3 style="text-align:center",><span class="badge badge-info">中央空调参数设定</span></h3>
+
+            <form class="form-horizontal" action="." method="post">
+              <div class="form-group">
+                 <label for="mode">模式</label>
+                    <select class="form-control" id="mode">
+                               <option value="0">制冷</option>
+                               <option valie="1">制热</option>
+                    </select>
+              </div>
+
+              <div class="form-group">
+                 <label for="default_TargetTemp ">目标温度:</label>
+                    <input  type="text" class="form-control" id="{{ default_TargetTemp }}" placeholder="请输入目标温度">
+              </div>
+
+              <div class="form-group">
+                 <label for="fan_speed">风速</label>
+                    <select class="form-control" id="{{ FeeRate }}">
+                               <option value="0">低速</option>
+                               <option value="1">中速</option>
+                               <option value="2">高速</option>
+                    </select>
+              </div>
+
+              <div align="center" style="position:relative;top:10px">
+                <input type="submit" class="btn btn-info" value="提交">
+              </div>
+            </form>
+
+  </div>-->
