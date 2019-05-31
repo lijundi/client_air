@@ -19,20 +19,19 @@
     a:active {color:#0000FF;}  /* 鼠标点击时 */
 
 
-.button1 {
-    background-color: #FFFACD/* Green */
-    border: none;
-    color: black;
-    padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px;
-    cursor: pointer;
+.content h2{
+	font-weight:700;
+	line-height: 1.5em;
+	font-size: 1.5em;
+	color: #555555;
+	text-transform: uppercase;
+	padding: 10px 0;
+	border-bottom: 1px solid rgb(209, 209, 209);
 }
 </style>
 </head>
+
+
 <body>
 <div id="app">
     <!-- 模态框 -->
@@ -71,78 +70,40 @@
             </div>
         </div>
     </div>
-    <!-- 开关 -->
-    <div v-if="on_off">
 
-    </div>
 
-    <p>fee:{{fee}}</p>
-    <p>serving:{{serving}}</p>
-    <p>tar_temp:{{tar_temp}}</p>
-    <p>cur_temp:{{cur_temp}}</p>
-    <button class="btn btn-primary" onclick="power_on(v.cur_temp)">power_on</button>
-    <button class="btn btn-primary" onclick="power_off()">power_off</button>
-    <button class="btn btn-primary" onclick="update_temp(v.cur_temp)">update_temp</button>
-    <button class="btn btn-primary" onclick="config_para(v.fan_speed, v.mode, v.tar_temp)">config</button>
-    <button class="btn btn-primary" onclick="temp()">temp</button>
-    <button class="btn btn-primary" v-on:click="tar_temp+=1">tar_temp++</button>
-    <button class="btn btn-primary" v-on:click="tar_temp-=1">tar_temp--</button>
-</div>
-<script>
-    var v = new Vue({
-        el: '#app',
-        data: {
-            on_off:false,
-            ip:'',
-            port:'',
-            wurl:'',
-            fee:0,
-            mode:0,
-            serving:false,
-            state:0,
-            tar_temp:25,
-            fan_speed:1,
-            cur_temp:25, //当前室温
-            room_id:1, //房间号
-            message: 'Runoob!'
-        }
-    });
-</script>
-</body>
-</html>
-<!--
-<div class="wrap">
-   <div class="wrapper">
-    <div class="header">
 
-     <div class="main1">
+    <h2 style="text-align:center">欢迎使用空调</h2>
 
-         <div class="content">
+       <div v-if="on_off">
+          <div class="content">
             <h2>查看当前参数</h2>
-         </div>
-
-
-        <h3 style="text-align:center",id={{ room_id }}><span class="badge badge-info">房间 {{ room_id }}</span></h3>
+          </div>
+        <div class="container">
+           <h3><span class="badge badge-info">房间 {{ room_id }}</span></h3>
          <table class="table table-striped table-bordered">
             <tr>
                 <td><b>模式</b></td>
-               <if mode >
+                <template>
+                <div v-if="mode=='0'">
                 <td>制热</td>
-               </if>
-                <else>
+                </div>
+                <div v-else>
                 <td>制冷</td>
-                </else>
+                </div>
+                </template>
+
 
             </tr>
 
-            <tr>
+             <tr>
                 <td><b>当前室温</b></td>
-                <td>{{ current_temp }}</td>
+                <td>{{ cur_temp }}</td>
             </tr>
 
             <tr>
                 <td><b>目标室温</b></td>
-                <td>{{ target_temp }}</td>
+                <td>{{ tar_temp }}</td>
             </tr>
 
             <tr>
@@ -154,21 +115,16 @@
                 <td><b>费用</b></td>
                 <td>{{ fee }}</td>
             </tr>
-
-            <tr>
-                <td><b>服务时长</b></td>
-                <td>{{ serving_duration }}</td>
-            </tr>
         </table>
+        </div>
 
-
-          <div class="content">
+           <div class="content">
             <h2>设置空调参数</h2>
          </div>
 
         <div class="container">
 
-          <h3 style="text-align:center",><span class="badge badge-info">中央空调参数设定</span></h3>
+          <h3><span class="badge badge-info">空调参数设定</span></h3>
 
             <form class="form-horizontal" action="." method="post">
               <div class="form-group">
@@ -181,21 +137,70 @@
 
               <div class="form-group">
                  <label for="default_TargetTemp ">目标温度:</label>
-                    <input  type="text" class="form-control" id="{{ default_TargetTemp }}" placeholder="请输入目标温度">
+                    <input  type="text" class="form-control" id="{{ tar_temp }}" placeholder="请输入目标温度">
               </div>
 
               <div class="form-group">
                  <label for="fan_speed">风速</label>
-                    <select class="form-control" id="{{ FeeRate }}">
+                    <select class="form-control" id="{{ fan_speed }}">
                                <option value="0">低速</option>
                                <option value="1">中速</option>
                                <option value="2">高速</option>
                     </select>
               </div>
 
-              <div align="center" style="position:relative;top:10px">
-                <input type="submit" class="btn btn-info" value="提交">
-              </div>
-            </form>
+                <button class="btn btn-primary" v-on:click="cur_temp+=1">温度加</button>
+                <button class="btn btn-primary" v-on:click="cur_temp-=1">温度减</button>
+                <br>
+                <div align="left" style="position:relative;top:10px">
+                <button class="btn btn-warning" onclick="config_para(v.fan, v.mode, v.tar_temp)">确认配置</button>
+                </div>
+                <div align="right" style="position:relative;top:10px">
+                    <button class="btn btn-danger" onclick="power_off()">关机</button></div>
 
-  </div>-->
+
+
+       </div>
+</div>
+
+         <div v-else>
+             <br>
+             <br>
+             <div align="center" style="position:relative;top:10px">
+              <button class="btn btn-primary" onclick="power_on(v.cur_temp)">power_on</button>
+             </div>
+         </div>
+
+
+         </div>
+    </div>
+   </div>
+    </div>
+</div>
+
+<script>
+    var v = new Vue({
+        el: '#app',
+        data: {
+            on_off:false,
+            ip:'',
+            port:'',
+            wurl:'',
+            fee:0,
+            mode:1,
+            serving:false,
+            state:0,
+            tar_temp:25,
+            fan_speed:1,
+            cur_temp:25, //当前室温
+            room_id:1, //房间号
+            message: 'Runoob!'
+        }
+    });
+</script>
+</body>
+</html>
+
+
+
+
