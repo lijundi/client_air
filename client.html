@@ -72,16 +72,21 @@
         </div>
     </div>
     <!-- 开关 -->
-    <p>{{fee}}</p>
-    <p>{{mode}}</p>
-    <p>{{tar_temp}}</p>
-    <p>{{cur_temp}}</p>
+    <div v-if="on_off">
+
+    </div>
+
+    <p>fee:{{fee}}</p>
+    <p>serving:{{serving}}</p>
+    <p>tar_temp:{{tar_temp}}</p>
+    <p>cur_temp:{{cur_temp}}</p>
     <button class="btn btn-primary" onclick="power_on(v.cur_temp)">power_on</button>
     <button class="btn btn-primary" onclick="power_off()">power_off</button>
     <button class="btn btn-primary" onclick="update_temp(v.cur_temp)">update_temp</button>
-    <button class="btn btn-primary" onclick="config_para(v.fan, v.mode, v.tar_temp)">config</button>
-    <button class="btn btn-primary" v-on:click="cur_temp+=1">cur_temp++</button>
-    <button class="btn btn-primary" v-on:click="cur_temp-=1">cur_temp--</button>
+    <button class="btn btn-primary" onclick="config_para(v.fan_speed, v.mode, v.tar_temp)">config</button>
+    <button class="btn btn-primary" onclick="temp()">temp</button>
+    <button class="btn btn-primary" v-on:click="tar_temp+=1">tar_temp++</button>
+    <button class="btn btn-primary" v-on:click="tar_temp-=1">tar_temp--</button>
 </div>
 <script>
     var v = new Vue({

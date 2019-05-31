@@ -52,17 +52,22 @@ function init() {
 	msg_config.config.room_id = v.room_id;
 	msg_temp_update.temp_update.room_id = v.room_id;
 	air_ws = new WebSocket(v.wurl);
-	air_ws.onopen = function(){};
+	air_ws.onopen = function(){alert("connect ok");};
 	air_ws.onmessage = function (evt) {
         air_ws_handle(evt);
     };
-	// temp_ws.onopen = function(){alert("connecting");};
-	// temp_ws.onmessage = function(evt){
-	//     temp_ws_handle(evt);
-	// };
-	// start();
-	// temp(v.on_off);
-	//setInterval(function(){temp(v.on_off)},10000); //10秒发一次室温请求
+	temp_ws = new WebSocket("ws://127.0.0.1:8000/temperature/websocket/");
+	temp_ws.onopen = function(){start();temp();};
+	temp_ws.onmessage = function(evt){
+	    temp_ws_handle(evt);
+	};
+
+	setInterval(function(){temp()},10000); //10秒发一次室温请求
 	// setInterval(function(){update_temp(v.cur_temp)},10000); //10秒发一次室温请求
 }
 
+// window.onunload = function() {
+//     alert("sure?");
+//     air_ws.close();
+//     temp_ws.close();
+// };

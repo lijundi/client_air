@@ -1,6 +1,6 @@
 // var air_ws = new ReconnectingWebSocket(v.wurl);
 var air_ws;
-//var temp_ws = new WebSocket("ws://127.0.0.1:8000/temperature/start/");
+var temp_ws;
 
 //temp_ws的处理函数
 function temp_ws_handle(evt) {
@@ -10,6 +10,14 @@ function temp_ws_handle(evt) {
             v.cur_temp = d.temp;
             if(v.on_off){
                 update_temp(d.temp);
+            }
+        }
+        if(d.hasOwnProperty("status")){
+            if(d.status === "success"){
+                alert("success");
+            }
+            else{
+                alert("fail");
             }
         }
     }
@@ -22,14 +30,18 @@ function air_ws_handle(evt) {
         //alert(d);
         if(d.hasOwnProperty("poweron")){
             if(d.poweron === "ok"){
+                v.on_off = true;
                 v.serving = true;
                 v.state = 1;
+                alert("poweron:ok")
             }
             else if(d.poweron === "busy"){
+                v.on_off = true;
                 v.serving = false;
                 v.state = 1;
             }
             else{
+                v.on_off = false;
                 alert("poweron:error");
             }
         }
@@ -44,12 +56,13 @@ function air_ws_handle(evt) {
                 v.state = 0;
             }
             else {
+                v.on_off = true;
                 alert("poweroff:fail");
             }
         }
         if(d.hasOwnProperty("config")){
             if(d.config === "ok"){
-
+                alert("config:ok");
             }
             else{
                 alert("config:fail");
@@ -58,6 +71,7 @@ function air_ws_handle(evt) {
         if(d.hasOwnProperty("finish")){
             v.serving = false;
             v.state = 2;
+            alert("finish:ok")
         }
         if(d.hasOwnProperty("cost")){
             v.fee = d.cost;
@@ -67,75 +81,23 @@ function air_ws_handle(evt) {
 
 //启动室温模拟
 function start() {
-    // var ws = new ReconnectingWebSocket("ws://127.0.0.1:8000/temperature/start/");
-    // ws.onopen = function() {
-    //     ws.send(JSON.stringify(msg_start));
-    //     //alert("sending");
-    // };
-    // ws.onmessage = function(evt) {
-    //     var d = JSON.parse(evt.data);
-    //     // if(d['status']=="fail")
-    //     //     alert("fail to start!!!");
-    // };
-    // ws.onclose = function() {
-    //     //alert("start over");
-    // };
-    temp_ws.send(JSON.stringify(msg_start))
+    temp_ws.send(JSON.stringify(msg_start));
 }
 //获取当前室温
 function temp() {
+    msg_temp.fanSpeed = v.fan_speed;
+    msg_temp.serving = v.serving;
+    msg_temp.tar_temp = v.tar_temp;
     temp_ws.send(JSON.stringify(msg_temp));
 }
 
 //更新室温至服务端
 function update_temp(current_temp) {
-    // var ws = new WebSocket(v.wurl);
-    // ws.onopen = function() {
-    //     msg_temp_update.temp_update.cur_temp = current_temp;
-    //     ws.send(JSON.stringify(msg_temp_update));
-    //     //alert("sending");
-    // };
-    // ws.onmessage = function(evt) {
-    //     if(evt.data){
-    //         var d = JSON.parse(evt.data);
-    //         //alert(evt.data);
-    //         v.fee = d['cost'];
-    //         if(d['finish']==='')
-    //             v.serving = false;
-    //     }
-    // };
-    // ws.onclose = function() {
-    //     //alert("start over");
-    // };
     msg_temp_update.temp_update.cur_temp = current_temp;
     air_ws.send(JSON.stringify(msg_temp_update));
 }
 //开机
 function power_on(current_temp) {
-    // var ws = new WebSocket(v.wurl);
-    // ws.onopen = function() {
-    //     msg_power_on.poweron.cur_temp = current_temp;
-    //     ws.send(JSON.stringify(msg_power_on));
-    //     //alert("sending");
-    // };
-    // ws.onmessage = function(evt) {
-    //     if(evt.data){
-    //         var d = JSON.parse(evt.data);
-    //         //alert(evt.data);
-    //         v.mode = d.setpara.mode;
-    //         v.tar_temp = d.setpara.target_temp;
-    //         v.fan_speed = d.setpara.fan;
-    //         if(d['poweron'] === "ok"){
-    //             v.serving = true;
-    //         }
-    //         else if(d['poweron'] === "error"){
-    //             alert("poweron:error");
-    //         }
-    //     }
-    // };
-    // ws.onclose = function() {
-    //     //alert("start over");
-    // };
     msg_power_on.poweron.cur_temp = current_temp;
     air_ws.send(JSON.stringify(msg_power_on));
 }
