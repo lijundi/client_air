@@ -12,12 +12,9 @@ function temp_ws_handle(evt) {
                 update_temp(d.temp);
             }
         }
-        if(d.hasOwnProperty("status")){
-            if(d.status === "success"){
-                alert("success");
-            }
-            else{
-                alert("fail");
+        if(d.hasOwnProperty("setpara")){
+            if(d.setpara === "ok"){
+                //alert("temp setpara ok");
             }
         }
     }
@@ -33,7 +30,7 @@ function air_ws_handle(evt) {
                 v.on_off = true;
                 v.serving = true;
                 v.state = 1;
-                alert("poweron:ok")
+                // alert("poweron:ok")
             }
             else if(d.poweron === "busy"){
                 v.on_off = true;
@@ -48,12 +45,16 @@ function air_ws_handle(evt) {
         if(d.hasOwnProperty("setpara")){
             v.mode = d.setpara.mode;
             v.tar_temp = d.setpara.target_temp;
-            v.fan_speed = d.setpara.fan;
+            v.fan_speed = String(d.setpara.fan);
+            v.highlimit_temp = d.setpara.highlimit_temp;
+            v.lowlimit_temp = d.setpara.lowlimit_temp;
+            temp_para(d.setpara.lowfan_change_temp, d.setpara.medfan_change_temp, d.setpara.highfan_change_temp);
         }
         if(d.hasOwnProperty("poweroff")){
             if(d.poweroff === "ok"){
                 v.on_off = false;
                 v.state = 0;
+                alert("poweroff:ok");
             }
             else {
                 v.on_off = true;
@@ -62,7 +63,7 @@ function air_ws_handle(evt) {
         }
         if(d.hasOwnProperty("config")){
             if(d.config === "ok"){
-                alert("config:ok");
+                // alert("config:ok");
             }
             else{
                 alert("config:fail");
@@ -71,7 +72,7 @@ function air_ws_handle(evt) {
         if(d.hasOwnProperty("finish")){
             v.serving = false;
             v.state = 2;
-            alert("finish:ok")
+            // alert("finish:ok");
         }
         if(d.hasOwnProperty("cost")){
             v.fee = d.cost;
@@ -79,13 +80,16 @@ function air_ws_handle(evt) {
     }
 }
 
-//启动室温模拟
-function start() {
-    temp_ws.send(JSON.stringify(msg_start));
+//设置室温模拟参数
+function temp_para(l, m, h) {
+    msg_temp_para.setpara.lowfan_change_temp = l;
+    msg_temp_para.setpara.medfan_change_temp = m;
+    msg_temp_para.setpara.highfan_change_temp = h;
+    temp_ws.send(JSON.stringify(msg_temp_para));
 }
 //获取当前室温
 function temp() {
-    msg_temp.fanSpeed = v.fan_speed;
+    msg_temp.fanSpeed = Number(v.fan_speed);
     msg_temp.serving = v.serving;
     msg_temp.tar_temp = v.tar_temp;
     temp_ws.send(JSON.stringify(msg_temp));
@@ -108,8 +112,9 @@ function power_off() {
 }
 //设置工作参数
 function config_para(fan, mode, target_temp) {
-    msg_config.config.fan = fan;
+    msg_config.config.fan = Number(fan);
     msg_config.config.mode = mode;
     msg_config.config.target_temp = target_temp;
-    air_ws.send(JSON.stringify(msg_config))
+    air_ws.send(JSON.stringify(msg_config));
+    alert("配置参数已发送");
 }
